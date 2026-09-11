@@ -1,7 +1,7 @@
 # Storyblok agent plugin
 
 Distribution repo. The root **is** the plugin: `skills/` plus one manifest per
-client (Claude Code, Agent Plugins v1, Gemini CLI).
+client (Claude Code, Agent Plugins v1, Antigravity).
 
 - **IMPORTANT:** Every file here except `LICENSE`, `AGENTS.md` and `.github/`
   is generated and overwritten on release. Edits to them are lost.
@@ -14,5 +14,5 @@ client (Claude Code, Agent Plugins v1, Gemini CLI).
 - `plugin.json`, `mcp.json` — Agent Plugins v1 (Codex, Cursor).
 - `.claude-plugin/`, `.mcp.json` — Claude Code.
 - `.agents/plugins/marketplace.json` — Codex marketplace entry.
-- `gemini-extension.json` — Gemini CLI.
+- `mcp_config.json` — Antigravity.
 - `skills/<name>/SKILL.md` — the payload, shared by all three formats.
