@@ -3,8 +3,8 @@
 Distribution repo. The root **is** the plugin: `skills/` plus one manifest per
 client (Claude Code, Codex, Cursor, Kiro, Antigravity).
 
-- **IMPORTANT:** Every file here except `LICENSE`, `AGENTS.md`, `CLAUDE.md` and
-  `.github/` is generated and overwritten on release. Edits to them are lost.
+- **IMPORTANT:** Every file here except `LICENSE`, `AGENTS.md` and `.github/`
+  is generated and overwritten on release. Edits to them are lost.
 - Skills are authored upstream, not here. A fix to a `SKILL.md` belongs in the
   source repo.
 - `version` is set upstream and must change for clients to notice a release.
