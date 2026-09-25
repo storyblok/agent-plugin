@@ -14,11 +14,22 @@ against the generated files — see AGENTS.md.
 /plugin install storyblok@storyblok
 ```
 
+Or from a shell, with a Git URL (HTTPS or SSH) or the path to a local clone:
+
+```sh
+claude plugin marketplace add https://github.com/storyblok/agent-plugin.git
+claude plugin install storyblok@storyblok
+```
+
 **Codex**
 
 ```sh
 codex plugin marketplace add storyblok/agent-plugin
+codex plugin add storyblok@storyblok
 ```
+
+`marketplace add` also takes a Git URL (HTTPS or SSH) or the path to a local
+clone, e.g. `codex plugin marketplace add https://github.com/storyblok/agent-plugin.git`.
 
 **Cursor**
 
