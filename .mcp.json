@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "storyblok": {
+      "type": "http",
+      "url": "https://mcp.storyblok.com/mcp"
+    }
+  }
+}

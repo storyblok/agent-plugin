@@ -1,0 +1,45 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "storyblok",
+  "version": "0.0.1",
+  "description": "Agent skills for working with Storyblok via the Storyblok MCP server and CLI.",
+  "author": {
+    "name": "Storyblok",
+    "url": "https://www.storyblok.com"
+  },
+  "homepage": "https://github.com/storyblok/agent-plugin",
+  "repository": "https://github.com/storyblok/agent-plugin",
+  "license": "MIT",
+  "keywords": [
+    "storyblok",
+    "blok",
+    "bloks"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Storyblok",
+        "shortDescription": "Model content and build frontends on Storyblok",
+        "longDescription": "Model content types and blocks in a Storyblok space, generate the frontend components that render them, and turn Figma designs into Storyblok-backed components, through the Storyblok MCP server and CLI.",
+        "developerName": "Storyblok",
+        "category": "Developer Tools",
+        "capabilities": [
+          "Interactive",
+          "Read",
+          "Write"
+        ],
+        "websiteURL": "https://www.storyblok.com",
+        "privacyPolicyURL": "https://www.storyblok.com/legal/privacy-policy",
+        "termsOfServiceURL": "https://www.storyblok.com/legal/terms",
+        "supportURL": "https://github.com/storyblok/agent-plugin/issues",
+        "defaultPrompt": [
+          "Model content for a blog in my Storyblok space",
+          "Generate frontend components for my Storyblok blocks",
+          "Turn this Figma design into Storyblok blocks and components"
+        ],
+        "composerIcon": "./assets/logo.png",
+        "logo": "./assets/logo.png"
+      }
+    }
+  }
+}

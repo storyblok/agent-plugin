@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "storyblok": {
+      "serverUrl": "https://mcp.storyblok.com/mcp"
+    }
+  }
+}

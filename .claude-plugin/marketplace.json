@@ -1,0 +1,15 @@
+{
+  "name": "storyblok",
+  "description": "Agent skills for working with Storyblok via the Storyblok MCP server and CLI.",
+  "owner": {
+    "name": "Storyblok",
+    "url": "https://www.storyblok.com"
+  },
+  "plugins": [
+    {
+      "name": "storyblok",
+      "source": "./",
+      "description": "Agent skills for working with Storyblok via the Storyblok MCP server and CLI."
+    }
+  ]
+}
