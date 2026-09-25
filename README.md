@@ -14,11 +14,21 @@ against the generated files — see AGENTS.md.
 /plugin install storyblok@storyblok
 ```
 
-**Codex / Cursor**
+**Codex**
 
 ```sh
 codex plugin marketplace add storyblok/agent-plugin
 ```
+
+**Cursor**
+
+```sh
+git clone https://github.com/storyblok/agent-plugin ~/.cursor/plugins/local/storyblok
+```
+
+Then run **Developer: Reload Window**. Local plugins need **Allow Local Plugin
+Imports** enabled. Teams can instead add the repo under Dashboard → Plugins &
+MCPs → **Add Marketplace** → **Import from Repo**.
 
 **Kiro**
 
