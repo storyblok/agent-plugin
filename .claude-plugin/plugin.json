@@ -7,5 +7,6 @@
     "url": "https://www.storyblok.com"
   },
   "homepage": "https://github.com/storyblok/agent-plugin",
-  "license": "MIT"
+  "license": "MIT",
+  "privacyPolicyUrl": "https://www.storyblok.com/legal/privacy-policy"
 }
