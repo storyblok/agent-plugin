@@ -3,7 +3,7 @@
 set -eu
 
 usage() {
-  echo "Usage: STORYBLOK_SPACE_ID=<id> upload-asset.sh <image-path> [alt-text]" >&2
+  echo "Usage: <token> | STORYBLOK_SPACE_ID=<id> upload-asset.sh <image-path> [alt-text]" >&2
   exit 2
 }
 
@@ -12,7 +12,6 @@ usage() {
 asset_path=$1
 alt_text=${2:-}
 space_id=${STORYBLOK_SPACE_ID:-}
-token=${STORYBLOK_TOKEN:-}
 region=${STORYBLOK_REGION:-}
 
 [ -n "$space_id" ] || {
@@ -54,11 +53,16 @@ fi
   echo "Set STORYBLOK_REGION to one of: eu, us, cn, ca, ap" >&2
   exit 2
 }
+# The token arrives on stdin, never from the environment: a credential that
+# merely exists there is not one the user handed over.
+token=
+[ -t 0 ] || token=$(cat)
 [ -n "$token" ] || {
-  echo "STORYBLOK_TOKEN is required in the environment for asset uploads." >&2
-  echo "Tell the user to set it in the environment running the agent, for example:" >&2
-  echo "  export STORYBLOK_TOKEN=<their-Storyblok-token>" >&2
-  echo "Then rerun this script. Do not ask them to paste the token into chat." >&2
+  echo "A Storyblok personal access token is required on stdin." >&2
+  echo "Pipe in the one the user named, e.g.:" >&2
+  echo "  printf '%s' \"\$<VARIABLE>\" | STORYBLOK_SPACE_ID=<id> upload-asset.sh <image-path>" >&2
+  echo "If the user has not named a variable or secret-manager command for it," >&2
+  echo "ask which one to use. Never ask for the token itself." >&2
   exit 2
 }
 [ -f "$asset_path" ] || {

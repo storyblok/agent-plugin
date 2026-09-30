@@ -54,9 +54,8 @@ generated project.
 
 ## Auth
 
-`storyblok user` reports the session. The CLI reads `STORYBLOK_LOGIN`,
-`STORYBLOK_TOKEN` and `STORYBLOK_REGION` on its own, so where all three are set
-every command is already authenticated and there is nothing for you to do.
+`storyblok user` reports the session. When it reports one, every command is
+already authenticated and there is nothing for you to do.
 
 With no session, ask the user to run `storyblok login` themselves; it is a chain
 of interactive prompts ending in a password, an OTP or a pasted token, so you

@@ -7,9 +7,9 @@ reading Figma and to the asset scripts.
 
 - **Node ID rejected** — percent-decode the `node-id` from the URL. Hyphens and
   colons are both accepted; `%3A` and `%3B` are not.
-- **Missing `STORYBLOK_TOKEN`** — tell the user to set it in the environment
-  running the agent, following the script's error message. Never ask them to
-  paste its value into chat.
+- **No token on stdin** — ask the user which environment variable or
+  secret-manager command holds their personal access token, then pipe it in.
+  Never ask them to paste its value into chat.
 - **Other asset authentication failure** — check `STORYBLOK_SPACE_ID` and
   optional `STORYBLOK_REGION`. Never print credentials.
 - **Unsupported asset MIME** — export the source as SVG, PNG, JPEG, GIF, WebP,

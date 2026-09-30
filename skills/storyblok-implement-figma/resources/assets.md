@@ -2,8 +2,12 @@
 
 ## 1. Write one manifest
 
-Use unique keys. Omit file extensions from `name` and `path`; the script detects
-the real MIME type and adds the correct extension.
+Use unique keys. Each entry names its source as either `url` or `file`, a local
+path for an image you prepared yourself (a crop, a converted export) — never
+both. Omit file extensions from `name` and `path`; the script detects the real
+MIME type and adds the correct extension. `file` is the opposite case: it is a
+source the script reads, not a destination it names, so write it exactly as it
+is on disk, extension included.
 
 ```json
 [
@@ -13,6 +17,13 @@ the real MIME type and adds the correct extension.
     "url": "https://www.figma.com/api/mcp/asset/...",
     "name": "hero",
     "alt": "Traveler with a suitcase"
+  },
+  {
+    "key": "case_study_tomtom",
+    "kind": "cms",
+    "file": ".design/prep/case-study-tomtom.png",
+    "name": "case-study-tomtom",
+    "alt": "TomTom dashboard"
   },
   {
     "key": "hero_decor",
@@ -46,13 +57,32 @@ the real MIME type and adds the correct extension.
   sub-node id (`I1:2;3:4`). Export the nearest enclosing plain-id node instead
   of dropping the artwork.
 
-## 2. Run once
+## 2. Preview it
 
 ```bash
-cd "<project root>" && STORYBLOK_SPACE_ID="<space_id>" \
+"<skill-directory>/scripts/preview-assets.sh" .figma-assets.json preview.png
+```
+
+One image holding every entry, labelled with its key and set on a checkerboard
+so transparency reads apart from a baked-in backdrop. Fix the manifest before
+running the sync, and delete the preview after.
+
+`"<skill-directory>/scripts/inspect-image.sh" <path-or-url>...` reports the
+dimensions, opaque share and dominant colours of every image in one call when
+the preview leaves that in doubt.
+
+## 3. Run once
+
+```bash
+cd "<project root>" && printf '%s' "$<TOKEN_VARIABLE>" |
+  STORYBLOK_SPACE_ID="<space_id>" \
   "<skill-directory>/scripts/sync-assets.sh" \
   .figma-assets.json
 ```
+
+`<TOKEN_VARIABLE>` is the variable the user named. For a secret-manager command,
+pipe that command instead of `printf`. A manifest with only `code` entries needs
+no token, so drop the pipe.
 
 The script:
 
@@ -63,7 +93,8 @@ The script:
 - prints the keys that succeeded even when others fail, and names the failures
   on stderr, so a partial run is never re-uploaded from scratch;
 - processes at most six assets concurrently;
-- uploads CMS assets with `STORYBLOK_TOKEN`;
+- uploads CMS assets with the token it reads on stdin, never one from the
+  environment;
 - prints one JSON object.
 
 Example result:
@@ -93,5 +124,6 @@ manifest after use.
 
 ## Single prepared file
 
-Use `scripts/upload-asset.sh <path> [alt]` only when the file already exists
-locally and no batch is needed. It prints one asset field value.
+Use `scripts/upload-asset.sh <path> [alt]`, with the token piped in the same
+way, only when the file already exists locally and no batch is needed. It prints
+one asset field value.

@@ -84,7 +84,8 @@ the reference:
   `operation`/`parameters`) on list operations; unprojected responses flood
   context and can hit the MCP's output truncation. When content comes after the
   list, include `components.schema` — otherwise you pay a `getComponent` per
-  component you write.
+  component you write. A path names fields, never array elements:
+  `story.content.body` is valid, `story.content.body.0` is rejected outright.
 - **Field values have shapes** — an asset field does not take a URL, a richtext
   field does not take a string. The reference for the resource has them.
 

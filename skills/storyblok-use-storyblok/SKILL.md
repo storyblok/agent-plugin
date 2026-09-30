@@ -36,10 +36,11 @@ Run each `storyblok` probe as its own Bash call. Chained behind `;` or `&&` into
 a wider command it gets held for approval, and the retry usually drops the probe
 — leaving you to guess at the one thing §2 routes on.
 
-Never accept a token through the chat, and never write one down — a variable
-name, or a command that reads the token from the user's secret manager, is a
-valid way to be handed one. The MCP server and the CLI each hold their own
-credentials.
+Use a token only where the user has named it: an environment variable ("use
+`STORYBLOK_TOKEN`") or a command that reads it from their secret manager. A
+token that is merely set in the environment is not one they handed over, so
+never look for one there. Never accept a token through the chat, and never write
+one down. The MCP server and the CLI each hold their own credentials.
 
 Two credentials, for two APIs. A **personal access token** (`STORYBLOK_TOKEN`,
 or `STORYBLOK_PERSONAL_ACCESS_TOKEN`) grants account-wide Management API access:

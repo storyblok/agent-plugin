@@ -13,8 +13,10 @@ description:
 2. Whether a story should be created — see step 6. Do not ask up front; offer it
    once the blocks exist.
 
-The asset scripts read `STORYBLOK_TOKEN` from the environment and explain how to
-resolve a missing value.
+Uploading `cms` assets in step 5 needs a Storyblok personal access token: the
+environment variable or secret-manager command the user names for it. When they
+have not named one, ask which to use then, not up front. Never ask for the token
+itself, and never use one only because it is set in the environment.
 
 ## Workflow
 
@@ -80,9 +82,10 @@ to this project**; it is written for neither this stack nor Storyblok.
 Reusable components appear as childless `<instance>` elements — fetch code for
 the section frame that contains them, never one call per instance inside it.
 Every call also renders the node as an image, so cost scales with what you ask
-for. Repeated cards differing only in their icon are still one call: take each
-card's asset from the section result, and fetch a single instance only when that
-result genuinely omits it.
+for; `excludeScreenshot: true` drops that render on a call you want only the
+values from. Repeated cards differing only in their icon are still one call:
+take each card's asset from the section result, and fetch a single instance only
+when that result genuinely omits it.
 
 Large results commonly spill to a file. When that happens:
 
@@ -174,6 +177,11 @@ Do not download, inspect, rename, upload, or clean each asset with separate tool
 calls. Read `resources/assets.md`, write one manifest, and run
 `scripts/sync-assets.sh` once.
 
+One manifest means every image the implementation needs, not the artwork alone:
+the logos and marks in step 3's code-owned chrome list are `code` entries in
+this same run. If step 7 needs an image this step did not upload, come back here
+rather than fetching it inline.
+
 Each artwork subtree from step 3 is one `cms` asset in that manifest, with `alt`
 written from the labels inside the graphic so its meaning survives for screen
 readers and search, or a plain description of what it depicts when it carries no
@@ -187,10 +195,16 @@ asking for more. Exporting a subtree this way is neither a substitute for
 `get_design_context` nor a validation step; it is how artwork becomes an asset.
 `contentsOnly` can exclude floating content parented to the page rather than the
 subtree (e.g. a connector or callout drawn above a section). The response's
-dimensions cannot show that: view every render before it goes in the manifest. A
-piece missing means re-export without `contentsOnly`; the whole node coming back
-as a solid block means an ancestor backdrop was baked in, so export the
-graphic's own layer instead.
+dimensions cannot show that, so view every render. View them as one image rather
+than one call each: write the manifest first and render it with
+`"<skill-directory>/scripts/preview-assets.sh" <manifest> preview.png`. A piece
+missing means re-export without `contentsOnly`; the whole node coming back as a
+solid block means an ancestor backdrop was baked in, so export the graphic's own
+layer instead. An SVG from `download_assets` bakes that backdrop in the same
+way; take the node's PNG render when it does.
+`"<skill-directory>/scripts/inspect-image.sh" <path-or-url>...` reports
+dimensions, opaque share and dominant colours — an opaque share of 1 on a mark
+that should be transparent is that backdrop.
 
 ### 6. Offer to create a story
 
@@ -234,3 +248,6 @@ Report a divergence instead of quietly leaving it unmentioned.
 
 - `scripts/sync-assets.sh` — process one asset manifest.
 - `scripts/upload-asset.sh` — upload one prepared file.
+- `scripts/inspect-image.sh` — report an image's size, transparency and colours.
+- `scripts/preview-assets.sh` — render a manifest's images as one labelled
+  image.

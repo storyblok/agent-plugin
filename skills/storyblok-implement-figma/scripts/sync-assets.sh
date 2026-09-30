@@ -3,7 +3,8 @@
 set -eu
 
 usage() {
-  echo "Usage: STORYBLOK_SPACE_ID=<id> sync-assets.sh <manifest.json>" >&2
+  echo "Usage: <token> | STORYBLOK_SPACE_ID=<id> sync-assets.sh <manifest.json>" >&2
+  echo "The token is needed only when the manifest has cms entries." >&2
   exit 2
 }
 
@@ -35,7 +36,7 @@ jq -e '
   type == "array" and length > 0 and
   all(.[];
     (.key | type == "string" and length > 0) and
-    (.url | type == "string" and length > 0) and
+    ((.url | type == "string" and length > 0) != (.file | type == "string" and length > 0)) and
     (
       (.kind == "cms" and (.name | type == "string" and test("^[A-Za-z0-9._-]+$"))) or
       (.kind == "code" and (.path | type == "string" and length > 0))
@@ -43,9 +44,24 @@ jq -e '
   ) and
   ([.[].key] | length == (unique | length))
 ' "$manifest" >/dev/null || {
-  echo "Invalid manifest: use unique keys and cms/name or code/path entries" >&2
+  echo "Invalid manifest: use unique keys, exactly one of url/file, and cms/name or code/path entries" >&2
   exit 2
 }
+
+# Read once here: the uploads run in background jobs, which get no stdin, so
+# each one is handed the token in turn.
+token=
+if jq -e 'any(.[]; .kind == "cms")' "$manifest" >/dev/null; then
+  [ -t 0 ] || token=$(cat)
+  [ -n "$token" ] || {
+    echo "cms entries need a Storyblok personal access token on stdin." >&2
+    echo "Pipe in the one the user named, e.g.:" >&2
+    echo "  printf '%s' \"\$<VARIABLE>\" | STORYBLOK_SPACE_ID=<id> sync-assets.sh <manifest.json>" >&2
+    echo "If the user has not named a variable or secret-manager command for it," >&2
+    echo "ask which one to use. Never ask for the token itself." >&2
+    exit 2
+  }
+fi
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 upload_script="$script_dir/upload-asset.sh"
@@ -92,12 +108,33 @@ process_record() {
   record=$1
   index=$2
   key=$(printf '%s' "$record" | jq -r '.key')
-  url=$(printf '%s' "$record" | jq -r '.url')
+  source_file=$(printf '%s' "$record" | jq -r '.file // ""')
   kind=$(printf '%s' "$record" | jq -r '.kind')
   download="$stage_dir/$index.download"
 
-  "$curl_bin" -sS --fail-with-body --retry 3 --retry-delay 1 \
-    --retry-connrefused -o "$download" "$url"
+  if [ -n "$source_file" ]; then
+    # The manifest is written from design context, which is untrusted input, and
+    # a `cms` entry ends up on a public asset URL. Keep the source inside the
+    # working directory, and refuse symlinks, so no file outside the project can
+    # be published by naming it here.
+    case "/$source_file/" in
+      *"/../"*|//*)
+        echo "Asset file must be a clean relative path: $key -> $source_file" >&2
+        return 1
+        ;;
+    esac
+    if [ ! -f "$source_file" ] || [ -L "$source_file" ]; then
+      echo "Asset file must be an existing regular file: $key -> $source_file" >&2
+      return 1
+    fi
+    # Staged like a download so the MIME check, extension fix and upload path
+    # stay identical.
+    cp -- "$source_file" "$download"
+  else
+    url=$(printf '%s' "$record" | jq -r '.url')
+    "$curl_bin" -sS --fail-with-body --retry 3 --retry-delay 1 \
+      --retry-connrefused -o "$download" "$url"
+  fi
   mime=$("$file_bin" --brief --mime-type "$download")
   extension=$(extension_for "$mime" "$download")
 
@@ -106,11 +143,11 @@ process_record() {
     alt=$(printf '%s' "$record" | jq -r '.alt // ""')
     prepared="$stage_dir/$name.$extension"
     mv "$download" "$prepared"
-    value=$("$upload_script" "$prepared" "$alt")
+    value=$(printf '%s' "$token" | "$upload_script" "$prepared" "$alt")
   else
     relative_path=$(printf '%s' "$record" | jq -r '.path')
     case "/$relative_path/" in
-      *"/../"*|*"/./"*|//*)
+      *"/../"*|//*)
         echo "Code asset path must be a clean relative path: $relative_path" >&2
         return 1
         ;;
