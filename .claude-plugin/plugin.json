@@ -1,11 +1,12 @@
 {
   "name": "storyblok",
   "description": "Agent skills for working with Storyblok via the Storyblok MCP server and CLI.",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "author": {
     "name": "Storyblok",
     "url": "https://www.storyblok.com"
   },
   "homepage": "https://github.com/storyblok/agent-plugin",
-  "license": "MIT"
+  "license": "MIT",
+  "privacyPolicyUrl": "https://www.storyblok.com/legal/privacy-policy"
 }

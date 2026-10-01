@@ -15,5 +15,8 @@ stories reference. Only what is specific to implementing a design is here.
   fields.
 - Repeated items go in the design order frozen in step 3, not the order the
   design context happened to list them in.
+- Assemble the whole `content` object first and send it in one `createStory`
+  call. A story created section by section costs a read-modify-write per section
+  and leaves a half-built page behind if the run stops.
 - Leave the story unpublished. Offer publishing separately — a design
   implementation is not a decision to go live.

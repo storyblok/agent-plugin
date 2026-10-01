@@ -1,0 +1,2 @@
+interface:
+  short_description: 'Work with Storyblok through its MCP server'

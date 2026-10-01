@@ -17,15 +17,15 @@ With no `storyblok` binary, run the command through `pnpm dlx storyblok …` or
 Everything after this runs inside the directory the command created.
 
 The scaffold reads its delivery token from `STORYBLOK_DELIVERY_API_TOKEN` in
-`.env`. Write the key there yourself, never as `--token`:
+`.env`. Write the key there yourself, never as `--token`, with the token the
+user named — an environment variable or a secret-manager command:
 
 ```bash
-printf 'STORYBLOK_DELIVERY_API_TOKEN=%s\n' \
-  "$STORYBLOK_DELIVERY_API_TOKEN" >>.env
+printf 'STORYBLOK_DELIVERY_API_TOKEN=%s\n' "$<TOKEN_VARIABLE>" >>.env
 ```
 
-With no token to hand, write the key empty and name it in the report so the user
-can fill it.
+When the user named none, write the key empty and name it in the report so the
+user can fill it. Never use a token only because it is set in the environment.
 
 Templates, each resolving to `github.com/storyblok/blueprint-core-<template>`:
 

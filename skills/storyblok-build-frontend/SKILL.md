@@ -195,32 +195,50 @@ npm run dev > dev.log 2>&1 &
 dev_pid=$!
 
 url=""
+ready=0
 for i in $(seq 1 40); do
   url=$(grep -oE 'https?://(localhost|127\.0\.0\.1)[^[:space:]]*' dev.log | head -1)
-  [ -n "$url" ] && curl -sf "$url" >/dev/null 2>&1 && break
+  if [ -n "$url" ] && curl -sf "$url" >/dev/null 2>&1; then
+    ready=$((ready + 1))
+    [ "$ready" -ge 2 ] && break
+  else
+    ready=0
+  fi
   sleep 1
 done
 ```
 
-If `url` is still empty once the loop ends, report that the dev server never
-came up (include the tail of `dev.log`) and skip the rendered-page check. When a
-story exists, append its slug to `url` before screenshotting.
+Two consecutive answers, not one. A dev server often optimises dependencies on
+the first request it receives and restarts itself on finishing, so the request
+that proves it is up is the one that takes it down.
 
-For the screenshot, use a script or dependency the project already has, or a
-browser MCP tool. With neither, take it with one command:
+If the loop ends without two consecutive answers, start the server once more and
+run it again — a server that took itself down mid-optimisation comes back. If
+the second attempt fails too, report that the dev server never came up (include
+the tail of `dev.log`) and skip the rendered-page check. When a story exists,
+append its slug to `url` before screenshotting.
+
+Take the screenshot with the bundled script, passing the design's width when it
+is not 1440:
 
 ```bash
-npx --yes playwright screenshot --full-page "$url" shot.png
+"<skill-directory>/scripts/screenshot-page.sh" "$url" shot.png <viewport-width> \
+  --slices
 ```
 
-If it reports the browser executable is missing, run
-`npx --yes playwright install chromium` once and repeat the command. Its warning
-banner about the project's dependencies is not an error. Add
-`--wait-for-timeout=3000` once if images are still loading. If the screenshot
-still fails, report the rendered-page comparison as skipped and continue.
+It captures the whole page, lazy-loaded images below the fold included, and
+installs a browser when the machine has none. `--slices` additionally cuts the
+capture into full-resolution tiles and prints their paths: read those rather
+than the whole image, which is too tall to compare against a design in one
+piece. If it fails, report the rendered-page comparison as skipped and continue.
 
-Stop the server with the PID this step started (`kill "$dev_pid" 2>/dev/null`),
-never by port, and delete `dev.log`, the screenshot, and any asset manifest.
+Stop the server this step started, never by port. `kill "$dev_pid" 2>/dev/null`
+covers a server that stays in the foreground. Some detach when they detect an
+agent and print their own stop command instead (Astro 7:
+`Stop: astro dev stop`); `$dev_pid` is then only the launcher, which has already
+exited, so run the printed command (`npx astro dev stop`). When `dev.log`
+reports a server that was `already running`, it is the user's — leave it
+running. Then delete `dev.log`, the screenshot, and any asset manifest.
 
 ### 7. Report
 
@@ -240,3 +258,7 @@ skipped, with its reason.
 - `resources/generic/setup-upgrade.md` — load to add Storyblok to an existing
   non-Astro project.
 - `resources/styling.md` — load before writing any component styles.
+
+## Scripts
+
+- `scripts/screenshot-page.sh` — capture a served page for step 6.

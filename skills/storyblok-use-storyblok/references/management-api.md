@@ -21,14 +21,15 @@ and falls in a range:
 The wrong host answers `404 ["This record could not be found"]` — the same as a
 wrong space id, so check the host before doubting the id.
 
-Authenticate with a personal access token already in the environment
-(`STORYBLOK_TOKEN`, `STORYBLOK_PERSONAL_ACCESS_TOKEN`, or whatever the project
-sets) — the raw token, no `Bearer`. Never expand it: an echoed token is a token
-in the transcript — test for one with `[ -n "$STORYBLOK_TOKEN" ] && echo set`,
-never with `env | grep -i storyblok`. With none set there is no credential to
-work with; say so and stop.
+Authenticate with the personal access token the user named: an environment
+variable or a secret-manager command — the raw token, no `Bearer`. When they
+have named none, ask which to use and wait; never pick one up only because it is
+set. Never expand it: an echoed token is a token in the transcript — check that
+a named variable is set with `[ -n "$STORYBLOK_TOKEN" ] && echo set`, never with
+`env | grep -i storyblok`.
 
-Pipe the header in as a curl config rather than passing `-H`:
+Pipe the header in as a curl config rather than passing `-H` — here with
+`STORYBLOK_TOKEN` as the variable the user named:
 
 ```bash
 printf 'header = "Authorization: %s"\n' "$STORYBLOK_TOKEN" |
@@ -40,4 +41,9 @@ That takes stdin, so a request body travels as `--data @<file>`, never `@-`.
 
 curl exits 0 on an HTTP error, so pass `--fail-with-body` and read the status.
 What the tool skills say about writes still holds: state the change before the
-first one, confirm a delete explicitly, and read back what you changed.
+first one, and read back what you changed.
+
+A delete waits for the user's explicit go-ahead, even when they named what to
+delete: name exactly what goes, say that a deleted story or asset moves to the
+trash and can be restored in the Storyblok UI, and stop. Only a pre-approved run
+skips the wait.

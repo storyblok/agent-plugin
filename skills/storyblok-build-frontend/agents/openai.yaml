@@ -1,0 +1,2 @@
+interface:
+  short_description: 'Generate frontend components for Storyblok blocks'

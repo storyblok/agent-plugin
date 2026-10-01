@@ -16,7 +16,8 @@ need — the server derives the region from it.
 
 `listSpaces` and the few other operations taking no `space_id` have nothing to
 derive from: `describe` marks them `requiresRegion`, and they need `region`
-passed explicitly even when it is `eu`.
+passed explicitly even when it is `eu`. Never infer the region from project
+files — get a `space_id` instead, or ask the user.
 
 ## Tool model
 
@@ -84,7 +85,8 @@ the reference:
   `operation`/`parameters`) on list operations; unprojected responses flood
   context and can hit the MCP's output truncation. When content comes after the
   list, include `components.schema` — otherwise you pay a `getComponent` per
-  component you write.
+  component you write. A path names fields, never array elements:
+  `story.content.body` is valid, `story.content.body.0` is rejected outright.
 - **Field values have shapes** — an asset field does not take a URL, a richtext
   field does not take a string. The reference for the resource has them.
 
@@ -97,7 +99,9 @@ the reference:
   statement. In an interactive session, stop there and get confirmation;
   otherwise say it and proceed.
 - **Destructive** (deletes, unpublishing, bulk operations): confirm explicitly
-  and separately, naming exactly what will be lost. Never run one unattended.
+  and separately, naming exactly what will be lost. Never run one unattended. A
+  deleted story or asset goes to the trash and can be restored in the Storyblok
+  UI, not through the MCP; say so.
 - **Report honestly.** List what was created, changed, and left alone. If you
   met the request differently than it was phrased (a new block type, a schema
   extension, a normalized value), say so.

@@ -14,15 +14,20 @@ Take stock, pick the tool, pick the skill.
 In that order. Load no other skill until §1 has run and §2 has picked the tool —
 otherwise you are working through a tool you never chose.
 
+What you check along the way — tools, sessions, config, project files — decides
+how you work; it is not news for the user. Mention it only when the user has to
+act on it or needs it to trust the result.
+
 ## 1. Take stock — once, at the start
 
-| Check       | How                                                                                                                                                             |
-| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| MCP server  | `mcp__storyblok__*` tools present; load them with `ToolSearch` if deferred — nothing found means no server, so stop looking and do not load `storyblok-use-mcp` |
-| CLI         | `node_modules/.bin/storyblok`, else the package manager's exec, else `command -v storyblok`                                                                     |
-| CLI session | `storyblok user` — installed is not logged in                                                                                                                   |
-| Schema mode | `@storyblok/schema` in `package.json`, or a file exporting `defineSchema` — usually `src/schema/`                                                               |
-| `space_id`  | `storyblok.config.ts`, then the environment, then ask                                                                                                           |
+| Check             | How                                                                                                                                                                                                                                                        |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| MCP server        | `mcp__storyblok__*` tools present; load them with `ToolSearch` if deferred — nothing found means no server, so stop looking and do not load `storyblok-use-mcp`                                                                                            |
+| CLI               | `node_modules/.bin/storyblok`, else the package manager's exec, else `command -v storyblok`                                                                                                                                                                |
+| CLI session       | `storyblok user` — installed is not logged in                                                                                                                                                                                                              |
+| Schema mode       | `@storyblok/schema` in `package.json`, or a file exporting `defineSchema` — usually `src/schema/`                                                                                                                                                          |
+| Storyblok project | `storyblok.config.*` in the root or `.storyblok/config.*`, or a `@storyblok/*` dependency in `package.json`                                                                                                                                                |
+| `space_id`        | Not a Storyblok project: ask, and open none of its files for it — nothing in them was written for Storyblok. In one: the CLI config's `space`, then a space-id key in `.env` (e.g. `STORYBLOK_SPACE_ID`), read by name, never the whole file; neither: ask |
 
 Do this before §2, every time — routing on an assumption about which tools exist
 is the one mistake that cannot be recovered later.
@@ -36,10 +41,11 @@ Run each `storyblok` probe as its own Bash call. Chained behind `;` or `&&` into
 a wider command it gets held for approval, and the retry usually drops the probe
 — leaving you to guess at the one thing §2 routes on.
 
-Never accept a token through the chat, and never write one down — a variable
-name, or a command that reads the token from the user's secret manager, is a
-valid way to be handed one. The MCP server and the CLI each hold their own
-credentials.
+Use a token only where the user has named it: an environment variable ("use
+`STORYBLOK_TOKEN`") or a command that reads it from their secret manager. A
+token that is merely set in the environment is not one they handed over, so
+never look for one there. Never accept a token through the chat, and never write
+one down. The MCP server and the CLI each hold their own credentials.
 
 Two credentials, for two APIs. A **personal access token** (`STORYBLOK_TOKEN`,
 or `STORYBLOK_PERSONAL_ACCESS_TOKEN`) grants account-wide Management API access:
