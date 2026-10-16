@@ -1,15 +1,15 @@
 # Non-Astro frameworks
 
-The official guide for the detected framework is
-`https://www.storyblok.com/docs/guides/<slug>.md`:
+The official quickstart for the detected framework is
+`https://www.storyblok.com/docs/quickstarts/<slug>.md`:
 
-| Framework          | Guide slug |
-| ------------------ | ---------- |
-| Nuxt               | `nuxt`     |
-| Next.js            | `nextjs`   |
-| React              | `react`    |
-| Vue                | `vue`      |
-| Svelte / SvelteKit | `svelte`   |
+| Framework          | Slug     |
+| ------------------ | -------- |
+| Nuxt               | `nuxt`   |
+| Next.js            | `nextjs` |
+| React              | `react`  |
+| Vue                | `vue`    |
+| Svelte / SvelteKit | `svelte` |
 
 ## 1. The installed SDK is the authority
 

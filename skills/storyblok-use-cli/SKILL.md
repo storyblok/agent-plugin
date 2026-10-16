@@ -174,7 +174,11 @@ Report what changed from the command's own output.
 
 ## Beyond this page
 
-`storyblok <command> --help` outranks this file whenever they disagree, and the
-full reference is <https://www.storyblok.com/docs/libraries/storyblok-cli.md>.
-Go there for a command's complete flag list, or for anything above that turns
-out not to answer the question.
+`storyblok <command> --help` outranks this file whenever they disagree.
+
+Each command has its own reference page, named after the command with a hyphen:
+`stories push` is <https://www.storyblok.com/docs/tooling/cli/stories-push.md>.
+Fetch that page for a command's complete flag list. When no single command's
+page answers the question, the index,
+<https://www.storyblok.com/docs/tooling/cli.md>, lists every page, including
+`setup` (`storyblok.config.ts`) and `global-options`.

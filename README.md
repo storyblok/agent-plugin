@@ -2,58 +2,31 @@
 
 Agent skills for working with Storyblok via the Storyblok MCP server and CLI.
 
+Documentation: [Agent Skills](https://www.storyblok.com/docs/tooling/agent-skills)
+
 Generated distribution repo: its root is the plugin. Do not open pull requests
-against the generated files — see AGENTS.md.
+against the generated files—see AGENTS.md.
 
 ## Install
 
-**Claude Code**
+Install the plugin in every supported agent on your device:
+
+```sh
+npx plugins add storyblok/agent-plugin
+```
+
+In Claude Code, you can also run:
 
 ```
 /plugin marketplace add storyblok/agent-plugin
 /plugin install storyblok@storyblok
 ```
 
-Or from a shell, with a Git URL (HTTPS or SSH) or the path to a local clone:
+For Codex, Cursor, Kiro, Antigravity, and agents without plugin support, refer to
+the [Install section](https://www.storyblok.com/docs/tooling/agent-skills#install)
+of the docs.
 
-```sh
-claude plugin marketplace add https://github.com/storyblok/agent-plugin.git
-claude plugin install storyblok@storyblok
-```
-
-**Codex**
-
-```sh
-codex plugin marketplace add storyblok/agent-plugin
-codex plugin add storyblok@storyblok
-```
-
-`marketplace add` also takes a Git URL (HTTPS or SSH) or the path to a local
-clone, e.g. `codex plugin marketplace add https://github.com/storyblok/agent-plugin.git`.
-
-**Cursor**
-
-```sh
-git clone https://github.com/storyblok/agent-plugin ~/.cursor/plugins/local/storyblok
-```
-
-Then run **Developer: Reload Window**. Local plugins need **Allow Local Plugin
-Imports** enabled. Teams can instead add the repo under Dashboard → Plugins &
-MCPs → **Add Marketplace** → **Import from Repo**.
-
-**Kiro**
-
-Powers panel → **Add Custom Power** → **Import power from GitHub**, then enter
-`https://github.com/storyblok/agent-plugin`.
-
-**Antigravity**
-
-```sh
-git clone https://github.com/storyblok/agent-plugin
-agy plugin install ./agent-plugin
-```
-
-All of them register the [Storyblok MCP server](https://www.storyblok.com/docs/libraries/mcp-server)
+The plugin registers the [Storyblok MCP server](https://www.storyblok.com/docs/tooling/mcp-server)
 over OAuth. No token is stored in this repo.
 
 ## Skills
@@ -93,7 +66,7 @@ they use these, only while doing the job the skill describes:
   it has one. Otherwise they run Playwright 1.63.0 from npm through `npx`, and
   Playwright downloads Chromium if none is installed.
 - **Storyblok CLI**: the skills may run the
-  [Storyblok CLI](https://www.storyblok.com/docs/libraries/storyblok-cli) from
+  [Storyblok CLI](https://www.storyblok.com/docs/tooling/cli) from
   npm, which uses its own login.
 - **Storyblok Management API**: when neither the MCP server nor the CLI has an
   operation, the skills may call the Management API directly with the personal

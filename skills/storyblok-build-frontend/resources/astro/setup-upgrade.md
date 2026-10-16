@@ -12,9 +12,9 @@ place; everything else is added beside what is there.
 ## 1. Install
 
 Follow the install step in the official guide:
-https://www.storyblok.com/docs/guides/astro.md. Then read the installed version
-out of `package.json`: from here on it is the authority, as `mechanics.md`
-section 1 requires.
+https://www.storyblok.com/docs/quickstarts/astro.md. Then read the installed
+version out of `package.json`: from here on it is the authority, as
+`mechanics.md` section 1 requires.
 
 ## 2. Register the integration
 

@@ -1,6 +1,6 @@
 # Astro
 
-The official guide is https://www.storyblok.com/docs/guides/astro.md.
+The official guide is https://www.storyblok.com/docs/quickstarts/astro.md.
 
 ## 1. The installed SDK is the authority
 
@@ -90,8 +90,8 @@ Only in that case — a project that does not exist yet, or one whose install ha
 not run — fall back to the official guide. Dispatch one subagent (cheap model)
 with a prompt that asks for verbatim snippets rather than prose:
 
-> Read https://www.storyblok.com/docs/guides/astro.md and return, as verbatim
-> code snippets with no commentary: (a) the `components` map in
+> Read https://www.storyblok.com/docs/quickstarts/astro.md and return, as
+> verbatim code snippets with no commentary: (a) the `components` map in
 > `astro.config.mjs` and its key/value convention, (b) a block component showing
 > how `blok` reaches the component, (c) how a nested `bloks` array is rendered,
 > (d) the `@storyblok/astro` version the guide states it was tested against.
