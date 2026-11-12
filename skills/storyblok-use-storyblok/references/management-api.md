@@ -1,7 +1,8 @@
-# The Management API directly
+# Management API
 
-The rung below both tools: what to do when neither the MCP server nor the CLI
-has the operation the job needs.
+curl during a session, when neither the MCP server nor the CLI can do the job.
+Code for the project uses `@storyblok/management-api-client` instead:
+https://www.storyblok.com/docs/libraries/js/management-api-client.md
 
 `https://<host>/v1/spaces/<space_id>/…` — one resource per call, the same API
 both tools drive.

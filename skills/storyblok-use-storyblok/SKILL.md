@@ -126,6 +126,8 @@ overrides it.
 
 Settle §4 before starting a request that changes the schema.
 
+Use the official packages where they fit: `references/packages.md`.
+
 ## 4. Space or code?
 
 A schema lives either in the space or in the repo as `@storyblok/schema`
