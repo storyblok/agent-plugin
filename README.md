@@ -34,11 +34,12 @@ over OAuth. No token is stored in this repo.
 | Skill | When it activates |
 | --- | --- |
 | `storyblok-build-frontend` | Generating frontend components for Storyblok blocks — writing, registering and validating the framework code that renders a space's content. E.g. "generate components for my blocks", "build an Astro + Storyblok landing page". |
+| `storyblok-build-plugin` | Extending Storyblok with plugins to enhance what editors can do — custom field inputs, Visual Editor panels, pages inside a space, integrations with external systems — including choosing, building, or deploying one. E.g. "editors need a map location picker", "build a field plugin", "deploy our plugin". |
 | `storyblok-implement-figma` | Turning a Figma design into frontend components backed by Storyblok blocks. E.g. "figma to storyblok", "build this Figma design". |
 | `storyblok-model-content` | Creating or modifying Storyblok components/blocks, content types, or fields, or modeling a content schema from multi-modal input. E.g. "model content for a blog", "add an image field to the teaser", "set up blocks for this landing page design". |
 | `storyblok-use-cli` | Driving Storyblok through the Storyblok CLI — code-driven schema, content migrations, bulk pull/push of stories, components, assets or datasources, or scaffolding a project. |
 | `storyblok-use-mcp` | Interacting with Storyblok through the MCP server — the tool model, operation names and payload shapes for stories, assets, components, datasources and every other resource. Load it before calling `mcp__storyblok__` tools, alongside the skill that owns the task. |
-| `storyblok-use-storyblok` | A request touches Storyblok at all. You MUST load it first — before any other Storyblok skill and before any `mcp__storyblok__` tool — to pick the right skill and the right tool for the job. E.g. "add an FAQ section to the pricing page", "model content for a blog", "set up Storyblok in this project". |
+| `storyblok-use-storyblok` | A request touches Storyblok at all, including advice or a plan that changes nothing yet. You MUST load it first — before any other Storyblok skill and before any `mcp__storyblok__` tool — to pick the right skill and the right tool for the job. E.g. "add an FAQ section to the pricing page", "model content for a blog", "set up Storyblok in this project". |
 
 ## What the skills run, fetch and send
 

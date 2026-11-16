@@ -1,10 +1,11 @@
 ---
 name: storyblok-use-storyblok
 description:
-  Use when a request touches Storyblok at all. You MUST load it first — before
-  any other Storyblok skill and before any `mcp__storyblok__` tool — to pick the
-  right skill and the right tool for the job. E.g. "add an FAQ section to the
-  pricing page", "model content for a blog", "set up Storyblok in this project".
+  Use when a request touches Storyblok at all, including advice or a plan that
+  changes nothing yet. You MUST load it first — before any other Storyblok skill
+  and before any `mcp__storyblok__` tool — to pick the right skill and the right
+  tool for the job. E.g. "add an FAQ section to the pricing page", "model
+  content for a blog", "set up Storyblok in this project".
 ---
 
 # Start here for Storyblok
@@ -32,10 +33,11 @@ act on it or needs it to trust the result.
 Do this before §2, every time — routing on an assumption about which tools exist
 is the one mistake that cannot be recovered later.
 
-Probe for the CLI with `command -v`, never with a version flag. The flag is
-`--vers`; `storyblok --version` is an unknown option that exits non-zero, so it
-reports a working CLI as missing. Do not suppress a probe's stderr — the error
-that explains itself is the part you need.
+Probe for the CLI with `command -v storyblok || echo 'storyblok: not found'`,
+never with a version flag. The `echo` keeps a missing CLI from reading as a
+failed call. The flag is `--vers`; `storyblok --version` is an unknown option
+that exits non-zero, so it reports a working CLI as missing. Do not suppress a
+probe's stderr — the error that explains itself is the part you need.
 
 Run each `storyblok` probe as its own Bash call. Chained behind `;` or `&&` into
 a wider command it gets held for approval, and the retry usually drops the probe
@@ -110,14 +112,18 @@ steps.
 
 ## 3. Pick the skill
 
-| Request                                                    | Skill                       |
-| ---------------------------------------------------------- | --------------------------- |
-| Answer a question — a lookup that writes nothing           | none — the tool skill alone |
-| Model or change blocks, content types, fields, datasources | `storyblok-model-content`   |
-| Write the frontend components that render blocks           | `storyblok-build-frontend`  |
-| Turn a Figma design into blocks and frontend               | `storyblok-implement-figma` |
-| The mechanics of driving the MCP server                    | `storyblok-use-mcp`         |
-| The mechanics of driving the CLI                           | `storyblok-use-cli`         |
+Load the matching skill before answering, also for advice or a plan that builds
+nothing yet: it holds the facts the answer depends on.
+
+| Request                                                                                                             | Skill                       |
+| ------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| Look something up in a space — a read that writes nothing                                                           | none — the tool skill alone |
+| Model or change blocks, content types, fields, datasources                                                          | `storyblok-model-content`   |
+| Write the frontend components that render blocks                                                                    | `storyblok-build-frontend`  |
+| Turn a Figma design into blocks and frontend                                                                        | `storyblok-implement-figma` |
+| Something editors cannot do yet: a custom input, editor panel, space page, third-party integration; any plugin task | `storyblok-build-plugin`    |
+| The mechanics of driving the MCP server                                                                             | `storyblok-use-mcp`         |
+| The mechanics of driving the CLI                                                                                    | `storyblok-use-cli`         |
 
 Load the skill for the tool you picked in §2 — `storyblok-use-mcp` or
 `storyblok-use-cli` — always, including when no task skill applies. Alongside
